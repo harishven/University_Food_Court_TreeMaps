@@ -1,0 +1,34 @@
+
+#chart{
+width: 1420px;
+height: 725px;
+}
+
+body{
+	background-color: black;
+}
+
+.grandparent text {
+font-weight: bold;
+font-size : large;
+font-family: "Times new roman", "Open Sans", Helvetica, Arial, sans-serif;
+}
+
+/* Fill color to the header rect */
+.grandparent rect {
+fill: #fef9cb;
+}
+
+/* Legend formating */
+.legend rect {
+stroke-width: 2px;
+}
+
+.legend text {
+text-anchor: middle;
+pointer-events: auto;
+font-size: 13px;
+font-family: "Times new roman";
+text-align: center;
+fill: black;
+}

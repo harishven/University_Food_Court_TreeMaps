@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Harish_Venkatesh - D3 Viz</title>
+<link rel="stylesheet" type="text/css" href="D3_Treemap_Style.css"/>
+<script type="text/javascript" src="http://d3js.org/d3.v2.js"></script>
+<script src="http://code.jquery.com/jquery-1.7.1.js"></script>
+</head>
+<body>
+<p id="chart">
+
+<script src = "D3_Treemap_JavaScript.js"></script>
+
+<script>
+function reSortRoot(root,value_key)
+{
+	for(var key in root)
+		{
+		if (key == "key"){
+			root.name = root.key;
+			delete root.key;
+						  }
+		if (key == "values"){
+			root.children = [];
+			for (item in root.values) {
+				root.children.push(reSortRoot(root.values[item], value_key));
+									  }
+			delete root.values;
+							 }
+		if (key == value_key) {
+				root.value = parseFloat(root[value_key]);
+				delete root[value_key];
+							 }
+		}
+	return root;
+}
+	d3.csv("food_court_filtered.csv", function(data){
+		var nested_data = d3.nest()
+				.key(function(d)  { return d.Store_Name;})
+				.key(function(d)  { return d.Menu_Item;})
+				.entries(data);
+		console.log(nested_data);
+	
+	var root ={};
+	root.key = "Food Court Data";
+	root.values = nested_data;
+	console.log(root);
+	root = reSortRoot(root,"Net_Sales");
+	console.log(root);
+	
+	var colorScale = d3.scale.ordinal()
+	 .domain([nested_data[0].name, nested_data[1].name,nested_data[2].name,
+		 nested_data[3].name, nested_data[4].name, nested_data[5].name,
+		 nested_data[6].name, nested_data[7].name, nested_data[8].name ])
+	.range(["#b7fdc7", "#e4fdb7", "#b6dcfc", "ffd9e7", "#fdd9ac",
+			"#c1c6fd", "#fdb8b3", "#bffafd", "#fbc2fc"]);
+colorcode(colorScale);
+	
+	loadData(root);
+	});
+</script>
+</body>
+</html> 
